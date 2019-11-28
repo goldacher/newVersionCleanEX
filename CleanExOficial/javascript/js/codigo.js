@@ -1,0 +1,1 @@
+document.write("Meu segundo ola mundo!");

@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Novo Documento</title>
+</head>
+<body>
+    <form action="#" name="contato">
+        <input type="text" name="nome" placeholder="Nome" required><br>
+        <input type="email" name="email" placeholder="E-mail" required><br>
+        <button type="submit" onclick="exibir()">Enviar</button>        
+    </form>
+    <script>
+        function exibir() {
+            var nome = document.contato.nome.value;
+            var email = document.contato.email.value;
+            console.log(nome + " " + email);
+            alert("O nome dela é: " + nome + " email: " + email);
+        }
+    </script>
+</body>
+</html>

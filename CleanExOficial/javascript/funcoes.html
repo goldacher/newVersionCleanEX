@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Novo Documento</title>
+</head>
+<body>
+<h1 id="demo"></h1>
+
+<a href="#" onclick="calcpar(30, 50)">Calcular</a>
+<script>
+    // Sem parametros
+    function calc() {
+        var res = 10 * 20;
+        return res;
+    }    
+    alert(calc());
+    // Tem parametros
+    function calcpar(n1, n2) {
+        var res = n1 * n2;
+        alert(res);
+    }
+    // alert(calcpar(10, 20));
+    // alert(calcpar(30, 40));
+</script>
+
+</body>
+</html>

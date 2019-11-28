@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Novo Documento</title>
+</head>
+
+<body>
+    <form name="calc" onsubmit="calcular();return false;">
+        <input type="number" name="x" placeholder="x" required>
+        <input type="number" name="y" placeholder="y" required>
+        <input type="submit" value="Calc">
+    </form>
+    <br>
+    <p id="Resultado">Resultado: </p>
+
+    <script>
+        function calcular() {
+            var x = new Number(document.calc.x.value);
+            var y = new Number(document.calc.y.value);
+            var z = x + y;
+            console.log(z);
+            document.getElementById("Resultado").innerHTML = "Resultado: " + z
+        }
+    </script>
+
+</body>
+
+</html>
