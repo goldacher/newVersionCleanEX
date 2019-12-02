@@ -43,7 +43,7 @@ function cartElement($productimg, $productname, $productprice, $productid){
                     <div class=\"border rounded\">
                         <div class=\"row bg-white\">
                             <div class=\"col-md-3 pl-0\">
-                                <img src= images/$productimg alt=\"Image1\" class=\"img-fluid\">
+                                <img src= images/$productimg.jpg alt=\"Image1\" class=\"img-fluid\">
                             </div>
                             <div class=\"col-md-6\">
                                 <h5 class=\"pt-2\">$productname</h5>

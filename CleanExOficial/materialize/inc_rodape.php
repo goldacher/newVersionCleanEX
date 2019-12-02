@@ -1,3 +1,4 @@
+
 <footer class="page-footer purple lighten-1">
     <div class="container">
         <div class="row">
@@ -25,3 +26,6 @@
 <script type="text/javascript" src="https://code.jquery.com/jquery-3.4.1.min.js">
 </script>
 <script type="text/javascript" src="js/materialize.min.js"></script>
+
+<!--  Scripts-->
+<?php include("inc_scripts.php"); ?>

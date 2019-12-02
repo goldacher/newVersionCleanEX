@@ -1,6 +1,8 @@
-<?php 
-  include("db_mz_funcoes.php");
-  validar_sessao();
+<?php
+require("inc_header.php");
+include("db_mz_funcoes.php");
+validar_sessao();
+
 //   usuario_logado();
 ?>
 
@@ -10,23 +12,29 @@
     Cat: <?php html_select_categoria(0); ?><br>
     <input type="submit" value="Enviar" name="enviar">
 </form>
-<?php 
-    $nome = filter_input(INPUT_POST, "nome",FILTER_SANITIZE_FULL_SPECIAL_CHARS);
-    $end = filter_input(INPUT_POST, "end",FILTER_SANITIZE_FULL_SPECIAL_CHARS);
-    $cat = filter_input(INPUT_POST, "categoria",FILTER_SANITIZE_NUMBER_INT);
+<?php
+$nome = filter_input(INPUT_POST, "nome", FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+$end = filter_input(INPUT_POST, "end", FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+$cat = filter_input(INPUT_POST, "categoria", FILTER_SANITIZE_NUMBER_INT);
 
-    if (($nome) && ($end) && ($cat)) {
-        require("db_conectar.php");
-        $sql = "INSERT INTO usuarios (cod, nome, end, cod_categoria) VALUES (NULL, :nome, :end, :cat);";
-        $stmt = $conexao->prepare($sql);
-        $stmt->bindValue(':nome', $nome);
-        $stmt->bindValue(':end', $end);
-        $stmt->bindValue(':cat', $cat);
-        if($stmt->execute()) {
-            echo "Registro inserido com sucesso!<br>";
-            echo "<a href=db_completo.php>Voltar</a>";
-        } else {
-            echo "Erro: " . $stmt->errorCode();
-        }    
-    }    
+if (($nome) && ($end) && ($cat)) {
+    require("db_conectar.php");
+    $sql = "INSERT INTO usuarios (cod, nome, end, cod_categoria) VALUES (NULL, :nome, :end, :cat);";
+    $stmt = $conexao->prepare($sql);
+    $stmt->bindValue(':nome', $nome);
+    $stmt->bindValue(':end', $end);
+    $stmt->bindValue(':cat', $cat);
+    if ($stmt->execute()) {
+        echo "Registro inserido com sucesso!<br>";
+        echo "<a href=db_completo.php>Voltar</a>";
+    } else {
+        echo "Erro: " . $stmt->errorCode();
+    }
+}
 ?>
+
+<!--  Rodape-->
+<?php include("inc_rodape.php"); ?>
+
+<!--  Scripts-->
+<?php include("inc_scripts.php"); ?>

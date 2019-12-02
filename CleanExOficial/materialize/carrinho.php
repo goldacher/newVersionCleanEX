@@ -1,6 +1,10 @@
 <?php
 require("inc_header.php");
+require("db_mz_funcoes.php");
+
 session_start();
+
+validar_sessao();
 
 require_once("CreateDb.php");
 require_once("component.php");

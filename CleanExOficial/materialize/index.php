@@ -3,8 +3,10 @@
 require("inc_header.php");
 require("db_conectar.php");
 require("db_mz_funcoes.php");
-session_start();
 
+usuario_logado();
+
+session_start();
 
 if (isset($_POST['add'])) {
   if (isset($_SESSION['cart'])) {
@@ -21,16 +23,24 @@ if (isset($_POST['add'])) {
         'product_id' => $_POST['product_id']
       );
 
-      $_SESSION['cart'][$count] = $item_array;
+      usuario_logado();
+      validar_sessao();
 
-      echo "<script>alert('Produto adicionado com sucesso..!')</script>";
-      echo "<script>window.location = 'index.php'</script>";
+      $_SESSION['cart'][$count] = $item_array;
     }
   } else {
 
     $item_array = array(
       'product_id' => $_POST['product_id']
     );
+
+
+    usuario_logado();
+    validar_sessao();
+
+
+    echo "<script>alert('Produto adicionado com sucesso..!')</script>";
+    echo "<script>window.location = 'index.php'</script>";
 
     $_SESSION['cart'][0] = $item_array;
     print_r($_SESSION['cart']);

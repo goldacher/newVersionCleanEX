@@ -3,11 +3,12 @@
   validar_sessao();
 
     //Matar a sessao
+    session_name('login');
     session_destroy();
     
     //matar o cookie
-    unset($_COOKIE["usuario"]);
-    setcookie("usuario",'');
+    unset($_COOKIE["email"]);
+    setcookie("email",'');
     unset($_COOKIE["nome"]);
     setcookie("nome",'');
 

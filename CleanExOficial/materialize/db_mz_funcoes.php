@@ -3,8 +3,9 @@
   <div class="col s12 m6 l4">
     <div class="card">
       <div class="card-image">
-        <a href="<?= $nome ?>.php">
-          <img src="images/<?= $local_img ?>">
+        <?php echo " <a href=detalhes.php?cod=$cod>"; ?>
+        <img src="images/<?= $local_img ?>.jpg">
+        </a>
         </a>
       </div>
       <div class="card-content">
@@ -39,7 +40,7 @@ function cards_principal()
     $sql = "SELECT * FROM produtos LIMIT :qtd OFFSET :ini";
     $stmt = $conexao->prepare($sql);
   }
-  $stmt->bindValue(':qtd', 10, PDO::PARAM_INT);
+  $stmt->bindValue(':qtd', 100, PDO::PARAM_INT);
   $stmt->bindValue(':ini', 0, PDO::PARAM_INT);
 
   if ($stmt->execute()) {
@@ -82,18 +83,20 @@ function html_select_categoria($valor_padrao)
   } else {
     echo "Erro na consulta: " . $stmt->errorCode();
   }
+
   //$conexao=null; // fechar conexão; 
   $stmt = null;
   $resultado = null;
 }
+
 //add para o login
 function validar_sessao()
 {
-  if (isset($_COOKIE["usuario"])) {
-    $_SESSION["usuario"] = $_COOKIE["usuario"];
+  if (isset($_COOKIE["email"])) {
+    $_SESSION["email"] = $_COOKIE["email"];
     $_SESSION["nome"] = $_COOKIE["nome"];
   }
-  if (!isset($_SESSION["usuario"])) {
+  if (!isset($_SESSION["email"])) {
     $_SESSION["erros"] = "Favor efetuar o login";
     echo    "<script>
             document.location=\"db_login.php\";
@@ -105,11 +108,11 @@ function validar_sessao()
 //Exibir o usuario logado
 function usuario_logado()
 {
-  if (isset($_COOKIE["usuario"])) {
-    $_SESSION["usuario"] = $_COOKIE["usuario"];
+  if (isset($_COOKIE["email"])) {
+    $_SESSION["email"] = $_COOKIE["email"];
     $_SESSION["nome"] = $_COOKIE["nome"];
   }
-  if (isset($_SESSION["usuario"])) {
+  if (isset($_SESSION["email"])) {
     echo "<h3>Usuario: " . $_SESSION["nome"];
     echo " (<a href=db_logout.php>Sair</a>)</h3>";
   }

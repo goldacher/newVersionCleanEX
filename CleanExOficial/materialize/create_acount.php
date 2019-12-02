@@ -1,140 +1,64 @@
-<!DOCTYPE html>
-<html lang="pt-br">
-
-<head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=no" />
-  <title>Cadastrar-se</title>
-
-  <!-- CSS  -->
-  <link href="css/materialize.css" type="text/css" rel="stylesheet" media="screen,projection" />
-  <link href="css/style.css" type="text/css" rel="stylesheet" media="screen,projection" />
-  <link rel="shortcut icon" href="images/favicon (8).ico" type="image/x-icon">
-  <link rel="icon" href="images/favicon (8).ico" type="image/x-icon">
-
-</head>
-
-<body>
   <!--   Cabeçalho   -->
-  <?php include("inc_header.php"); ?>
+  <?php include("inc_header.php");
+  require("db_mz_funcoes.php");
+  require("db_conectar.php");
+  ?>
 
   <br>
-  <div class="container">
-    <label for="Nome">Nome:</label>
-    <input placeholder="" id="first_name" type="text" class="validate" />
+  <form action="create_acount.php" method="post">
+    <div class="container">
+      <label for="Nome">Nome</label>
+      <input name="nome" type="text" class="validate" />
 
-    <label for="last_name">Sobrenome</label>
-    <input id="last_name" type="text" class="validate" />
+      <label for="endereco">Endereco</label>
+      <input name="endereco" type="text" class="validate" />
 
-    <label for="last_name">CPF/CNPJ</label>
-    <input id="last_name" type="text" class="validate" />
+      <label for="cpf">CPF/CNPJ</label>
+      <input name="cpf" type="text" class="validate" />
 
-    <label for="password">Senha:</label>
-    <input id="password" type="password" class="validate" />
+      <label for="senha">Senha</label>
+      <input name="senha" type="password" class="validate" />
 
-    <label for="email">Email:</label>
-    <input id="email" type="email" class="validate" />
+      <label for="email">Email:</label>
+      <input name="email" type="email" class="validate" />
 
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+      <button class="btn waves-effect waves-light" type="submit" name="action">Enviar
+        <i class="material-icons right">send</i>
+      </button>
+    </div>
+  </form>
+  <br>
 
-    <!-- Adicionando Javascript -->
-    <script type="text/javascript">
-      function limpa_formulário_cep() {
-        //Limpa valores do formulário de cep.
-        document.getElementById('rua').value = ("");
-        document.getElementById('bairro').value = ("");
-        document.getElementById('cidade').value = ("");
-        document.getElementById('uf').value = ("");
-        document.getElementById('ibge').value = ("");
-      }
+<?php
+  $nome = filter_input(INPUT_POST, "nome", FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+  $endereco = filter_input(INPUT_POST, "endereco", FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+  $cpf = filter_input(INPUT_POST, "cpf", FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+  $senha = filter_input(INPUT_POST, "senha", FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+  $email = filter_input(INPUT_POST, "email", FILTER_VALIDATE_EMAIL) ;
 
-      function meu_callback(conteudo) {
-        if (!("erro" in conteudo)) {
-          //Atualiza os campos com os valores.
-          document.getElementById('rua').value = (conteudo.logradouro);
-          document.getElementById('bairro').value = (conteudo.bairro);
-          document.getElementById('cidade').value = (conteudo.localidade);
-          document.getElementById('uf').value = (conteudo.uf);
-          document.getElementById('ibge').value = (conteudo.ibge);
-        } //end if.
-        else {
-          //CEP não Encontrado.
-          limpa_formulário_cep();
-          alert("CEP não encontrado.");
-        }
-      }
+  if (($nome) && ($endereco) && ($cpf) && ($senha) && ($email)) {
+  require("db_conectar.php");
+  $sql = "INSERT INTO usuarios (cod, nome, end, cpf, senha, email) VALUES (NULL, :nome, :end, :cpf, :senha, :email);";
+  $stmt = $conexao->prepare($sql);
+  $stmt->bindValue(':nome', $nome);
+  $stmt->bindValue(':end', $endereco);
+  $stmt->bindValue(':cpf', $cpf);
+  $stmt->bindValue(':email', $email);
 
-      function pesquisacep(valor) {
+  $senha = password_hash($senha,PASSWORD_DEFAULT);
 
-        //Nova variável "cep" somente com dígitos.
-        var cep = valor.replace(/\D/g, '');
+  $stmt->bindValue(':senha', $senha);
 
-        //Verifica se campo cep possui valor informado.
-        if (cep != "") {
+  if ($stmt->execute()) {
 
-          //Expressão regular para validar o CEP.
-          var validacep = /^[0-9]{8}$/;
-
-          //Valida o formato do CEP.
-          if (validacep.test(cep)) {
-
-            //Preenche os campos com "..." enquanto consulta webservice.
-            document.getElementById('rua').value = "...";
-            document.getElementById('bairro').value = "...";
-            document.getElementById('cidade').value = "...";
-            document.getElementById('uf').value = "...";
-            document.getElementById('ibge').value = "...";
-
-            //Cria um elemento javascript.
-            var script = document.createElement('script');
-
-            //Sincroniza com o callback.
-            script.src = 'https://viacep.com.br/ws/' + cep + '/json/?callback=meu_callback';
-
-            //Insere script no documento e carrega o conteúdo.
-            document.body.appendChild(script);
-
-          } //end if.
-          else {
-            //cep é inválido.
-            limpa_formulário_cep();
-            alert("Formato de CEP inválido.");
-          }
-        } //end if.
-        else {
-          //cep sem valor, limpa formulário.
-          limpa_formulário_cep();
-        }
-      };
-    </script>
-
-    <!--  Scripts-->
-    <?php include("inc_scripts.php"); ?>
-
-    </head>
-
-    <body>
-      <!-- Inicio do formulario -->
-      <form method="get" action=".">
-        <label>Cep:
-          <input name="cep" type="text" id="cep" value="" size="10" maxlength="9" onblur="pesquisacep(this.value);" /></label><br />
-        <label>Rua:
-          <input name="rua" type="text" id="rua" size="60" /></label><br />
-        <label>Bairro:
-          <input name="bairro" type="text" id="bairro" size="40" /></label><br />
-        <label>Cidade:
-          <input name="cidade" type="text" id="cidade" size="40" /></label><br />
-        <label>Estado:
-          <input name="uf" type="text" id="uf" size="2" /></label><br />
-        <label>IBGE:
-          <input name="ibge" type="text" id="ibge" size="8" /></label><br />
-      </form>
-  </div>
-
+    echo "<script>alert('Usuário adicionado com sucesso..!')</script>";
+    echo "<script>window.location = 'login.php'</script>";
+  
+} else {
+  echo "Erro: " . $stmt->errorCode();
+  }
+}
+?>
 
   <!--  Rodape-->
   <?php include("inc_rodape.php"); ?>
-
-</body>
-
-</html>
